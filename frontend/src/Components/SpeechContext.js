@@ -1,4 +1,5 @@
-import React, { createContext, useState } from "react";
+// SpeechContext.js
+import React, { createContext, useState } from 'react';
 
 export const SpeechContext = createContext();
 

@@ -1,9 +1,18 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect,useContext } from "react";
 import axios from "axios";
 import ReactMarkdown from 'react-markdown';
 import '../styles/Assignment.css';
 import rehypeRaw from "rehype-raw";
 import Mermaid from "./Mermaid";
+import { SpeechContext } from "./SpeechContext";
+import DictationPlayer from "./DictationPlayer";
+import {marked} from 'marked';
+
+function convertMarkdownToText(markdownText) {
+  const html = marked(markdownText);  // Convert Markdown to HTML
+  const plainText = html.replace(/<[^>]*>/g, '');  // Remove any HTML tags
+  return plainText;
+}
 
 function AnswerGenerator() {
   const [questionFile, setQuestionFile] = useState(null);
@@ -16,19 +25,36 @@ function AnswerGenerator() {
   const [answerLength, setAnswerLength] = useState("standard");
   const [marks, setMarks] = useState(10);
   const currentDate = new Date().toLocaleDateString(); 
+  const { setSpeechText } = useContext(SpeechContext);
+
+  const [isClient, setIsClient] = useState(false);
+
+useEffect(() => {
+  setIsClient(true);
+}, []);
+
+
+  useEffect(() => {
+  if (answer) {
+    setSpeechText(answer);
+  }
+}, [answer, setSpeechText]);
+
+
   
   const questionInputRef = useRef(null);
   const topicInputRef = useRef(null);
 
-  const renderers = {
+const renderers = {
   code({ node, inline, className, children, ...props }) {
     const match = /language-(\w+)/.exec(className || "");
     if (match?.[1] === "mermaid") {
-      return <Mermaid chart={String(children)} />;
+      return isClient ? <Mermaid chart={String(children)} /> : <div>Loading diagram...</div>;
     }
     return <code className={className} {...props}>{children}</code>;
   },
 };
+
 
 
   useEffect(() => {
@@ -399,8 +425,7 @@ function AnswerGenerator() {
             <p style={{margin:'0px',marginTop:'50px',fontFamily:'cursive'}}>Date: {currentDate}</p>
             <div style={{marginTop:'2px',borderBottom:'solid 1.5px black'}}></div>
             <div style={{marginTop:'2px',borderBottom:'solid 1.5px black'}}></div>
-            <ReactMarkdown rehypePlugins={[rehypeRaw]} components={renderers}>{answer}
-</ReactMarkdown>
+            <ReactMarkdown>{answer}</ReactMarkdown>
           </div>
           
           {images.length > 0 && (
@@ -422,6 +447,7 @@ function AnswerGenerator() {
           )}
         </div>
       )}
+      <DictationPlayer text={convertMarkdownToText(answer)} />
     </div>
   );
 }

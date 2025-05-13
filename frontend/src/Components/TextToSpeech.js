@@ -41,29 +41,32 @@ const TextToSpeech = () => {
     return baseDelay + chunk.length * charDelay + sentenceEndings * 300;
   };
 
-  const speakChunk = (index) => {
-    if (index >= chunks.length || isPaused) {
+const speakChunk = (index) => {
+  if (index >= chunks.length || isPaused) {
+    setIsSpeaking(false);
+    return;
+  }
+
+  const chunk = chunks[index];
+  const utterance = new SpeechSynthesisUtterance(chunk);
+  utterance.voice = availableVoices.find((v) => v.voiceURI === selectedVoiceURI);
+  utteranceRef.current = utterance;
+  setCurrentChunkIndex(index);
+
+  utterance.onend = () => {
+    if (!isPaused && index < chunks.length - 1) {
+      const pause = estimatePauseDuration(chunk);
+      setTimeout(() => {
+        speakChunk(index + 1); // Use 'index' directly here, NOT 'currentChunkIndex'
+      }, pause);
+    } else {
       setIsSpeaking(false);
-      return;
     }
-
-    const chunk = chunks[index];
-    const utterance = new SpeechSynthesisUtterance(chunk);
-    utterance.voice = availableVoices.find((v) => v.voiceURI === selectedVoiceURI);
-    utteranceRef.current = utterance;
-    setCurrentChunkIndex(index);
-
-    utterance.onend = () => {
-      if (!isPaused && currentChunkIndex < chunks.length - 1) {
-        const pause = estimatePauseDuration(chunk);
-        setTimeout(() => {
-          speakChunk(currentChunkIndex + 1);
-        }, pause);
-      }
-    };
-
-    window.speechSynthesis.speak(utterance);
   };
+
+  window.speechSynthesis.speak(utterance);
+};
+
 
   const startSpeaking = () => {
     if (!speechText.trim()) return;

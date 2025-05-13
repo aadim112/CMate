@@ -1,4 +1,6 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template,send_file
+import requests
+import tempfile
 from flask_cors import CORS
 import google.generativeai as genai
 import os
@@ -8,11 +10,23 @@ from PIL import Image
 import base64
 import io
 
+ELEVENLABS_API_KEY = 'sk_917d16326054c5e73036d42d3c17edcbbdede8220d8043a1'
 app = Flask(__name__)
 CORS(app)
 
 app.config['UPLOAD_FOLDER'] = 'uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+url = "https://api.elevenlabs.io/v1/voices"
+headers = {
+    "xi-api-key": ELEVENLABS_API_KEY
+}
+
+response = requests.get(url, headers=headers)
+voices = response.json()
+for voice in voices.get("voices", []):
+    print(f"Name: {voice['name']} | ID: {voice['voice_id']}")
+
 
 # Configure Tesseract path
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'

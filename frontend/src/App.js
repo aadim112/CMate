@@ -6,6 +6,7 @@ import contest from '../src/Assets/contest.png';
 import notes from '../src/Assets/notes.png';
 import TextToSpeech from "./Components/TextToSpeech";
 import { SpeechProvider } from './Components/SpeechContext.js';
+import DictationPlayer from './Components/DictationPlayer.js';
 
 function App() {
   return (
@@ -36,7 +37,6 @@ function App() {
         <div className='introduction'></div>
         <AnswerGenerator/>
       </div>
-      <TextToSpeech/>
     </SpeechProvider>
   );
 }
