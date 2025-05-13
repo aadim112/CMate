@@ -1,38 +1,95 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter;
+}
+.Home {
+  box-sizing: border-box;
+  background-image: url('../src/Assets/Background.png');
+  width: 100%;
+  height: 620px;
+  padding: 20px; /* example */
+  background-size: contain;
+  background-position: right;
+  background-color: #fefcf0;
+  background-repeat: no-repeat;
+}
+.introduction{
+  background-color: #fefcf0;
+}
+.header{
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+}
+.try-button{
+  width: 120px;
+  height: 40px;
+  background-color: #4b7fe0;
+  color: white;
+  font-family: Inter;
+  font-size: 15px;
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+.try-button:hover{
+  background-color: #3a6bb8;
+}
+.features {
+  width: auto;
+  height: auto;
+  display: flex;
+  margin-top: 10px;
 }
 
-.App-logo {
-  height: 40vmin;
+.feature {
+  width: 270px;
+  height: 160px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #ffff;
+  cursor: pointer;
+  margin-left: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 9px;
+  transition: transform 0.3s ease;
+}
+
+/* Slide image up on hover */
+.feature:hover img {
+  transform: translateY(-10px);
+}
+
+.feature p {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  width: 100%;
+  transform: translateX(-50%);
+  color: black;
+  font-family: Inter;
+  background: white;
+  padding: 5px 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Fade in text on hover */
+.feature:hover p {
+  opacity: 0.8;
 }
