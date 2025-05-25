@@ -1,0 +1,154 @@
+/* src/Styles/Navigation.css */
+.main-navigation {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: #fefcf0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.main-navigation.scrolled {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 70px;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.nav-logo p {
+  font-family: 'Inter', sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  color: #779ce0;
+  margin: 0;
+}
+
+.nav-items {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2rem;
+}
+
+.nav-items li {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  padding: 0.5rem 0;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+.nav-items li:hover {
+  color: #779ce0;
+}
+
+.nav-items li.active {
+  color: #779ce0;
+}
+
+.nav-items li.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #779ce0;
+  border-radius: 2px;
+}
+
+/* Mobile menu toggle */
+.mobile-menu-toggle {
+  display: none;
+  cursor: pointer;
+}
+
+.hamburger {
+  width: 24px;
+  height: 18px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hamburger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: #333;
+  transition: all 0.3s ease;
+}
+
+.hamburger.open span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 0 1rem;
+  }
+  
+  .mobile-menu-toggle {
+    display: block;
+    z-index: 1001;
+  }
+  
+  .nav-items {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    height: 100vh;
+    background-color: white;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 6rem 2rem 2rem;
+    transition: right 0.3s ease;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-items.mobile-open {
+    right: 0;
+  }
+  
+  .nav-items li {
+    width: 100%;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .nav-items li.active::after {
+    display: none;
+  }
+  
+  .nav-items li.active {
+    font-weight: 600;
+  }
+}

@@ -48,6 +48,7 @@ function DictationPlayer({ text }) {
     setProgress(0);
     isStoppedRef.current = false;
 
+
     chunksRef.current = splitTextIntoChunks(text, chunkSize);
     currentChunkIndexRef.current = 0;
 
@@ -132,7 +133,7 @@ function DictationPlayer({ text }) {
     let offset = { x: 0, y: 0 };
 
     const onMouseDown = (e) => {
-      if (e.target.classList.contains('header') || e.target.closest('.header')) {
+      if (e.target.classList.contains('bar') || e.target.closest('.bar')) {
         isDragging = true;
         offset.x = e.clientX - el.getBoundingClientRect().left;
         offset.y = e.clientY - el.getBoundingClientRect().top;
@@ -175,7 +176,7 @@ function DictationPlayer({ text }) {
       ref={dictationBoxRef}
       className={`dictation-player ${getPositionClass()} ${isCollapsed ? 'collapsed' : ''}`}
     >
-      <div className="header">
+      <div className="bar">
         <h4>🔊 Dictation</h4>
         <div className="controls">
           <button className="position-btn" onClick={() => changePosition('left', 'top')}>↖️</button>
@@ -303,7 +304,7 @@ function DictationPlayer({ text }) {
           bottom: auto;
         }
         
-        .header {
+        .bar {
           background: linear-gradient(135deg, #4776E6, #8E54E9);
           color: white;
           padding: 12px 16px;
@@ -315,7 +316,7 @@ function DictationPlayer({ text }) {
           user-select: none;
         }
         
-        .header h4 {
+        .bar h4 {
           margin: 0;
           font-weight: 600;
           font-size: 16px;

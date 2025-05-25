@@ -1,0 +1,394 @@
+/* CodeEditor.css */
+
+/* Main layout */
+.editor-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f6f8fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.editor-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Loading and error states */
+.loading, .error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #677681;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Problem description panel */
+.problem-panel {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  border-right: 1px solid #e1e4e8;
+}
+
+.problem-header {
+  margin-bottom: 20px;
+}
+
+.problem-header h1 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #24292e;
+}
+
+.problem-metadata {
+  display: flex;
+  gap: 12px;
+}
+
+.difficulty-badge, .topic-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.difficulty-badge.easy {
+  background-color: #e5f5e5;
+  color: #2c8528;
+}
+
+.difficulty-badge.medium {
+  background-color: #fdf2d9;
+  color: #b68c22;
+}
+
+.difficulty-badge.hard {
+  background-color: #fcebec;
+  color: #c93b4c;
+}
+
+.topic-badge {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+/* Tab navigation */
+.tab-navigation {
+  display: flex;
+  border-bottom: 1px solid #e1e4e8;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #586069;
+  cursor: pointer;
+  position: relative;
+}
+
+.tab-button.active {
+  color: #0366d6;
+}
+
+.tab-button.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #0366d6;
+}
+
+.tab-button:hover {
+  color: #0366d6;
+}
+
+/* Problem content */
+.problem-content {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #24292e;
+}
+
+.problem-description {
+  margin-bottom: 25px;
+}
+
+.examples-section, .constraints-section, .complexity-section {
+  margin-bottom: 25px;
+}
+
+.examples-section h3, .constraints-section h3, .complexity-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #24292e;
+}
+
+.example {
+  margin-bottom: 16px;
+  background-color: #f6f8fa;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.example-header {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.example-content pre {
+  margin: 5px 0;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 13px;
+  background-color: #ffffff;
+  padding: 8px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.constraints-section ul {
+  padding-left: 20px;
+}
+
+.constraints-section li {
+  margin-bottom: 6px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 13px;
+}
+
+/* Code editor panel */
+.code-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.toolbar-left {
+  display: flex;
+  gap: 20px;
+}
+
+.toolbar-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toolbar-item label {
+  font-size: 13px;
+  color: #586069;
+}
+
+.toolbar-item select {
+  padding: 4px 8px;
+  border: 1px solid #e1e4e8;
+  border-radius: 4px;
+  background-color: #f6f8fa;
+  font-size: 13px;
+  color: #24292e;
+  cursor: pointer;
+}
+
+.monaco-container {
+  flex: 1;
+  overflow: hidden;
+}
+
+.editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px;
+  background-color: #ffffff;
+  border-top: 1px solid #e1e4e8;
+}
+
+.run-button, .submit-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.run-button {
+  background-color: #f6f8fa;
+  border: 1px solid #e1e4e8;
+  color: #24292e;
+}
+
+.run-button:hover {
+  background-color: #eaeef2;
+}
+
+.submit-button {
+  background-color: #28a745;
+  border: 1px solid #22863a;
+  color: #ffffff;
+}
+
+.submit-button:hover {
+  background-color: #22863a;
+}
+
+.run-button:disabled, .submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Test results panel */
+.test-results {
+  background-color: #ffffff;
+  border-top: 1px solid #e1e4e8;
+  padding: 15px;
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+.test-results.success, .test-results.accepted {
+  border-top: 3px solid #28a745;
+}
+
+.test-results.error, .test-results.wrong {
+  border-top: 3px solid #d73a49;
+}
+
+.test-results.running, .test-results.submitting {
+  border-top: 3px solid #0366d6;
+}
+
+.results-header {
+  margin-bottom: 15px;
+}
+
+.results-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.performance-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f6f8fa;
+  border-radius: 4px;
+}
+
+.performance-stats span {
+  font-weight: 500;
+}
+
+.percentile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 5px;
+  font-size: 13px;
+  color: #586069;
+}
+
+.test-cases {
+  margin-top: 15px;
+}
+
+.test-cases h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.test-case {
+  margin-bottom: 12px;
+  border: 1px solid #e1e4e8;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.test-case-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: #f6f8fa;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.status {
+  font-weight: 600;
+}
+
+.status.passed {
+  color: #28a745;
+}
+
+.status.failed {
+  color: #d73a49;
+}
+
+.test-case-details {
+  padding: 12px;
+}
+
+.test-detail {
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.test-detail strong {
+  margin-right: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .editor-layout {
+    flex-direction: column;
+  }
+  
+  .problem-panel {
+    border-right: none;
+    border-bottom: 1px solid #e1e4e8;
+    max-height: 30vh;
+  }
+  
+  .performance-stats {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

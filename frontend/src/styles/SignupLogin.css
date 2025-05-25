@@ -1,0 +1,179 @@
+/* SignupLogin.css */
+
+.signup-login-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.auth-form {
+  background-color: white;
+  border-radius: 8px;
+  padding: 30px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.auth-form h2 {
+  margin-top: 0;
+  text-align: center;
+  color: #779ce0;
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #779ce0;
+}
+
+.college-search {
+  position: relative;
+}
+
+.college-options {
+  position: absolute;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  z-index: 10;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.college-options li {
+  padding: 10px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+.college-options li:hover {
+  background-color: #f5f8ff;
+}
+
+.auth-button {
+  width: 100%;
+  background-color: #779ce0;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.auth-button:hover {
+  background-color: #5b86d6;
+}
+
+.auth-button:disabled {
+  background-color: #b0c6e8;
+  cursor: not-allowed;
+}
+
+.auth-toggle {
+  margin-top: 20px;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+.auth-toggle span {
+  color: #779ce0;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.auth-toggle span:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #d32f2f;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+.success-message {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+/* Profile view styling */
+.profile-view {
+  text-align: center;
+}
+
+.user-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 20px;
+  border: 2px solid #779ce0;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logout-button {
+  background-color: #ff6b6b;
+  margin-top: 20px;
+}
+
+.logout-button:hover {
+  background-color: #ff5252;
+}

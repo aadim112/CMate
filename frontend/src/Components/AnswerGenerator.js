@@ -7,7 +7,6 @@ import Mermaid from "./Mermaid";
 import { SpeechContext } from "./SpeechContext";
 import DictationPlayer from "./DictationPlayer";
 import {marked} from 'marked';
-
 function convertMarkdownToText(markdownText) {
   const html = marked(markdownText);  // Convert Markdown to HTML
   const plainText = html.replace(/<[^>]*>/g, '');  // Remove any HTML tags
@@ -26,6 +25,7 @@ function AnswerGenerator() {
   const [marks, setMarks] = useState(10);
   const currentDate = new Date().toLocaleDateString(); 
   const { setSpeechText } = useContext(SpeechContext);
+  const [qna, setQna] = useState("");
 
   const [isClient, setIsClient] = useState(false);
 
@@ -55,6 +55,9 @@ const renderers = {
   },
 };
 
+const stripImages = (htmlString) => {
+  return htmlString.replace(/<img[^>]*alt="([^"]*)"[^>]*>/g, '');  // Remove images entirely
+};
 
 
   useEffect(() => {
@@ -174,34 +177,123 @@ const renderers = {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!questionFile) {
-      alert("Question file is required!");
-      return;
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
+// Add this state near your other states
+const [extractionState, setExtractionState] = useState({
+  loading: false,
+  error: null,
+  qna: ""
+});
+
+const handleExtractanswer = async (answerText) => {
+  if (!answerText?.trim()) {
+    setExtractionState(prev => ({
+      ...prev,
+      error: "No answer text provided for extraction"
+    }));
+    return;
+  }
+
+  try {
+    setExtractionState(prev => ({ ...prev, loading: true, error: null }));
+    
+    const res = await axios.post(`${API_BASE_URL}/extract-qna`, {
+      answer: answerText  // Send as JSON with "answer" field
+    }, {
+      timeout: 30000,
+      headers: {
+        'Content-Type': 'application/json'  // Important header
+      }
+    });
+
+    if (!res.data?.qna) {
+      throw new Error("Invalid response format from server");
     }
 
-    const formData = new FormData();
-    formData.append("question", questionFile);
-    if (topicFile) {
-      formData.append("topic", topicFile);
-    }
-    formData.append("answerLength", answerLength);
-    formData.append("marks", marks);
+    setExtractionState(prev => ({
+      ...prev,
+      loading: false,
+      qna: res.data.qna
+    }));
+    console.log("Extracted Q&A:", res.data.qna);
+  } catch (err) {
+    const errorMessage = err.response?.data?.error || 
+                        err.message || 
+                        "Failed to extract Q&A";
+    
+    setExtractionState(prev => ({
+      ...prev,
+      loading: false,
+      error: errorMessage
+    }));
+    
+    console.error("Extraction error:", err);
+  }
+};
 
-    try {
-      setLoading(true);
-      const res = await axios.post("http://localhost:5000/generate-answer", formData);
-      setAnswer(res.data.answer || "No answer returned.");
-      setImages(res.data.images || []);
-    } catch (err) {
-      console.error(err);
-      setAnswer("Error: " + (err.response?.data?.error || "Something went wrong."));
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  // Validation
+  if (!questionFile) {
+    alert("Question file is required!");
+    return;
+  }
+
+  if (marks < 1 || marks > 100) {
+    alert("Marks must be between 1 and 100");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("question", questionFile);
+  if (topicFile) formData.append("topic", topicFile);
+  formData.append("answerLength", answerLength);
+  formData.append("marks", marks.toString()); // Ensure string value
+
+  try {
+    setLoading(true);
+    setAnswer("");
+    setImages([]);
+    setExtractionState(prev => ({ ...prev, qna: "" }));
+
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const res = await axios.post(`${API_BASE_URL}/generate-answer`, formData, {
+      signal,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      timeout: 60000 // 60 seconds timeout
+    });
+
+    if (!res.data?.answer) {
+      throw new Error("No answer returned from server");
+    }
+
+    setAnswer(res.data.answer);
+    setImages(res.data.images || []);
+    
+    // Extract Q&A in parallel (no need to wait)
+    handleExtractanswer(res.data.answer);
+  } catch (err) {
+    if (axios.isCancel(err)) {
+      console.log("Request canceled:", err.message);
+    } else {
+      const errorMessage = err.response?.data?.error || 
+                         err.message || 
+                         "Failed to generate answer";
+      
+      setAnswer(`Error: ${errorMessage}`);
       setImages([]);
-    } finally {
-      setLoading(false);
+      console.error("Generation error:", err);
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   const getFileIcon = (file) => {
     if (!file) return '📄';
@@ -419,15 +511,16 @@ const renderers = {
       </form>
 
       {answer && (
-        <div className="answer-container">
-          <h3>Generated Answer</h3>
+        <div className="answer-section">
           <div className="notebook-paper">
-            <p style={{margin:'0px',marginTop:'50px',fontFamily:'cursive'}}>Date: {currentDate}</p>
-            <div style={{marginTop:'2px',borderBottom:'solid 1.5px black'}}></div>
-            <div style={{marginTop:'2px',borderBottom:'solid 1.5px black'}}></div>
+            <p style={{ margin: '0px', marginTop: '50px', fontFamily: 'cursive' }}>
+              Date: {currentDate}
+            </p>
+            <div style={{ marginTop: '2px', borderBottom: 'solid 1.5px black' }}></div>
+            <div style={{ marginTop: '2px', borderBottom: 'solid 1.5px black' }}></div>
             <ReactMarkdown>{answer}</ReactMarkdown>
           </div>
-          
+
           {images.length > 0 && (
             <div className="images-section">
               <h3>Extracted Diagrams</h3>
@@ -445,9 +538,11 @@ const renderers = {
               </div>
             </div>
           )}
-        </div>
-      )}
-      <DictationPlayer text={convertMarkdownToText(answer)} />
+
+          {/* This should be INSIDE the `answer &&` block */}
+          <DictationPlayer text={convertMarkdownToText(extractionState.qna)} />
+          </div>
+        )}
     </div>
   );
 }
