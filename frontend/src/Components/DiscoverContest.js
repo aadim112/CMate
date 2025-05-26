@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getDatabase, ref, get, push, set } from 'firebase/database';
+import { database } from '../firebase';
 import { v4 as uuidv4 } from 'uuid';
 import '../styles/DiscoverContest.css'; // Import the CSS file
 import CodeEditor from './CodeEditor'; // Import the CodeEditor component
@@ -19,6 +20,7 @@ export default function DiscoverContest({ userUID }) {
   const [showViewerMode, setShowViewerMode] = useState(false);
   const [editorProps, setEditorProps] = useState({});
   const [viewerProps, setViewerProps] = useState({});
+
 
   const db = getDatabase();
 
@@ -137,6 +139,7 @@ export default function DiscoverContest({ userUID }) {
       const selectedProblems = Object.fromEntries(shuffled.slice(0, numQuestions));
 
       const contestID = uuidv4();
+      const dbrefcreator =  ref(database, `users/${userUID}`);
       const newContest = {
         title,
         createdBy: userUID,

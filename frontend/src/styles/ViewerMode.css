@@ -7,7 +7,7 @@
   width: 100%;
   background-color: #1e1e1e;
   color: #e0e0e0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
 }
 
@@ -79,7 +79,8 @@
   margin-bottom: 1rem;
 }
 
-.difficulty-badge, .topic-badge {
+.difficulty-badge,
+.topic-badge {
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   font-size: 0.8rem;
@@ -170,8 +171,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Error state styling */
@@ -197,22 +202,22 @@
   .editors-container {
     flex-direction: column;
   }
-  
+
   .viewer-header {
     flex-direction: column;
     gap: 1rem;
     align-items: flex-start;
   }
-  
+
   .viewer-stats {
     width: 100%;
     justify-content: space-between;
   }
-  
+
   .problem-panel-visitor {
     max-height: 40vh;
   }
-  
+
   .monaco-wrapper {
     height: 50vh !important;
   }
